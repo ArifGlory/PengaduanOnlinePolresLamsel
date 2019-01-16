@@ -10,6 +10,7 @@ class The_Model extends CI_Model
 {
 
     var $mst_admin = "tb_admin";
+    var $mst_user = "tb_user";
 
     public function __construct()
     {
@@ -19,7 +20,7 @@ class The_Model extends CI_Model
 
     }
 
-    public function cekLoginUser($data){
+    public function cekLoginAdmin($data){
 
         $username = $data['username'];
         $password = $data['password'];
@@ -47,6 +48,45 @@ class The_Model extends CI_Model
                 $this->session->set_userdata($session);
 
                 redirect('Dashboard');
+            }else{
+
+                $this->session->set_flashdata("error","Login Gagal, cek kembali Username dan password anda");
+                redirect('Login');
+            }
+
+        }else{
+            $this->session->set_flashdata("error","Login Gagal, cek kembali Username dan password anda");
+            redirect('Login');
+        }
+    }
+
+    public function cekLoginUser($data){
+
+        $username = $data['username'];
+        $password = $data['password'];
+
+        $cek = $this->db->get_where($this->mst_user,array('email'=>$username))->num_rows();
+        $result = $this->db->get_where($this->mst_user,array('email'=>$username))->result();
+
+        if ($cek != 0){
+
+
+            //   $pass_didb = $this->encryption->decrypt($result[0]->password);
+            $pass_didb = $result[0]->password;
+
+            if ($pass_didb == $password){
+                /* $data_session = array(
+                     'id'=>$result[0]->id_user,
+                     'nama'=>$result[0]->nm_lengkap ,
+                     'bagian'=>"admin"
+                 );*/
+                $session['id_user'] = $result[0]->id_user;
+                $session['username'] = $result[0]->email;
+                $session['nama'] = $result[0]->nama_user;
+
+                $this->session->set_userdata($session);
+
+                redirect('User');
             }else{
 
                 $this->session->set_flashdata("error","Login Gagal, cek kembali Username dan password anda");

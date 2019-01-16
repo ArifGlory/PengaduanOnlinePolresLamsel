@@ -41,6 +41,8 @@
     <!-- Theme style  -->
     <link rel="stylesheet" href="<?php echo base_url();?>/assets2/css/style.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>/assets1/js/clockpicker/bootstrap-clockpicker.min.css">
+    <!-- sweetalert-->
+    <script type="text/javascript" src="<?php echo base_url();?>/assets4/aksesoris/SweetAlert/sweetalert.min.js"></script>
 
     <!-- Modernizr JS -->
     <script src="<?php echo base_url();?>/assets2/js/modernizr-2.6.2.min.js"></script>
@@ -48,7 +50,9 @@
     <!--[if lt IE 9]>
     <script src="<?php echo base_url();?>/assets2/js/respond.min.js"></script>
     <![endif]-->
-
+<?php
+$namaUser = $this->session->userdata('nama');
+?>
 </head>
 <body>
 <div id="colorlib-page">
@@ -61,7 +65,13 @@
                 <li><a href="<?php echo base_url();?>Utama/pengaduan">Pengaduan</a></li>
                 <li><a href="<?php echo base_url();?>Utama/cekPengaduan">Cek Pengaduan</a></li>
                 <li><a href="<?php echo base_url();?>Utama/dataPengaduan">Data Pengaduan</a></li>
+                <?php if (isset($namaUser)){
+                    ?>
+                    <li><a href="<?php echo base_url();?>Login/logout">Logout</a></li>
+                <?php
+                }else { ?>
                 <li><a href="<?php echo base_url();?>Login">Login</a></li>
+                <?php } ?>
             </ul>
         </nav>
 

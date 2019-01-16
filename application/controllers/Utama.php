@@ -43,4 +43,30 @@ class Utama extends CI_Controller
         $this->load->view('cek_pengaduan');
         $this->load->view('footer');
     }
+
+    function register(){
+        $this->load->view('header');
+        $this->load->view('register');
+        $this->load->view('footer');
+    }
+
+    function register_simpan(){
+        $in['email'] = $this->input->post('txt_email');
+        $in['password'] = $this->input->post('txt_password');
+        $confirm = $this->input->post('txt_password_confirm');
+        $in['nama_user'] = $this->input->post('txt_nama');
+        $in['pekerjaan'] = $this->input->post('txt_pekerjaan');
+        $in['alamat'] = $this->input->post('txt_alamat');
+
+        if ($in['password'] == $confirm){
+            $this->db->insert("tb_user",$in);
+            $this->session->set_flashdata("success","Pendaftaran Berhasil");
+
+            redirect('Login');
+        }else{
+            $this->session->set_flashdata("error_pass","Konfirmasi Passwod tidak valid");
+
+            redirect('Utama/register');
+        }
+    }
 }

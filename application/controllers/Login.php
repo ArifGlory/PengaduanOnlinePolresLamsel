@@ -19,7 +19,15 @@ class Login extends CI_Controller
     }
 
     function index(){
-        $this->load->view('login_admin');
+        $this->load->view('header');
+        $this->load->view('login_user');
+        $this->load->view('footer');
+    }
+
+    function signInUser(){
+        $in['username'] = $this->input->post('txt_email');
+        $in['password'] = $this->input->post('txt_password');
+        $this->The_Model->cekLoginUser($in);
     }
 
     function signInAdmin(){
