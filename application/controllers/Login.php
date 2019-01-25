@@ -24,6 +24,10 @@ class Login extends CI_Controller
         $this->load->view('footer');
     }
 
+    function loginAdmin(){
+        $this->load->view('login_admin');
+    }
+
     function signInUser(){
         $in['username'] = $this->input->post('txt_email');
         $in['password'] = $this->input->post('txt_password');
@@ -33,7 +37,7 @@ class Login extends CI_Controller
     function signInAdmin(){
         $in['username'] = $this->input->post('username');
         $in['password'] = $this->input->post('password');
-        $this->The_Model->cekLoginUser($in);
+        $this->The_Model->cekLoginAdmin($in);
     }
 
     function logout(){

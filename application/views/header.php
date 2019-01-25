@@ -43,6 +43,7 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>/assets1/js/clockpicker/bootstrap-clockpicker.min.css">
     <!-- sweetalert-->
     <script type="text/javascript" src="<?php echo base_url();?>/assets4/aksesoris/SweetAlert/sweetalert.min.js"></script>
+    <link rel="stylesheet" src="<?php echo base_url();?>/assets1/css/accordion.css">
 
     <!-- Modernizr JS -->
     <script src="<?php echo base_url();?>/assets2/js/modernizr-2.6.2.min.js"></script>
@@ -62,11 +63,11 @@ $namaUser = $this->session->userdata('nama');
         <nav id="colorlib-main-menu" role="navigation">
             <ul>
                 <li class="colorlib-active"><a href="<?php echo base_url();?>">Home</a></li>
-                <li><a href="<?php echo base_url();?>Utama/pengaduan">Pengaduan</a></li>
                 <li><a href="<?php echo base_url();?>Utama/cekPengaduan">Cek Pengaduan</a></li>
-                <li><a href="<?php echo base_url();?>Utama/dataPengaduan">Data Pengaduan</a></li>
                 <?php if (isset($namaUser)){
                     ?>
+                    <li><a href="<?php echo base_url();?>User/pengaduan">Pengaduan</a></li>
+                    <li><a href="<?php echo base_url();?>User">Dashboard</a></li>
                     <li><a href="<?php echo base_url();?>Login/logout">Logout</a></li>
                 <?php
                 }else { ?>

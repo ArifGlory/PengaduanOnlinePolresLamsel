@@ -11,6 +11,8 @@ class The_Model extends CI_Model
 
     var $mst_admin = "tb_admin";
     var $mst_user = "tb_user";
+    var $mst_pengaduan = "tb_pengaduan";
+    var $mst_kejahatan  = "tb_kejahatan";
 
     public function __construct()
     {
@@ -51,12 +53,12 @@ class The_Model extends CI_Model
             }else{
 
                 $this->session->set_flashdata("error","Login Gagal, cek kembali Username dan password anda");
-                redirect('Login');
+                redirect('Login/loginAdmin');
             }
 
         }else{
             $this->session->set_flashdata("error","Login Gagal, cek kembali Username dan password anda");
-            redirect('Login');
+            redirect('Login/loginAdmin');
         }
     }
 
@@ -98,5 +100,40 @@ class The_Model extends CI_Model
             redirect('Login');
         }
     }
+
+    function getDataKejahatan(){
+        $data =  $this->db->get($this->mst_kejahatan);
+        return $data;
+    }
+
+    function getDetailPengaduan($kodePengaduan){
+        $q = $this->db->query("SELECT * FROM tb_pengaduan 
+								    INNER JOIN tb_kejahatan 
+								        ON (tb_pengaduan.id_kejahatan = tb_kejahatan.id_kejahatan)
+								           WHERE kode_pengaduan = '$kodePengaduan'");
+        return $q;
+    }
+
+    function getDataSaksi($kodePengaduan){
+        $q = $this->db->query("SELECT * FROM tb_saksi INNER JOIN tb_pengaduan ON (tb_pengaduan.id_pengaduan = tb_saksi.id_pengaduan)
+        WHERE tb_pengaduan.kode_pengaduan = '$kodePengaduan'");
+        return $q;
+    }
+
+    function getDataPengaduan($idUser){
+        $q = $this->db->query("SELECT * FROM tb_pengaduan 
+								    INNER JOIN tb_kejahatan 
+								        ON (tb_pengaduan.id_kejahatan = tb_kejahatan.id_kejahatan)
+								           WHERE tb_pengaduan.id_user = $idUser");
+        return $q;
+    }
+
+    function getDataUser($idUser){
+        $this->db->where('id_user',$idUser);
+        $data =  $this->db->get($this->mst_user);
+        return $data;
+    }
+
+
 
 }

@@ -26,12 +26,6 @@ class Utama extends CI_Controller
         $this->load->view('footer');
     }
 
-    public function pengaduan(){
-        $this->load->view('header');
-        $this->load->view('pengaduan');
-        $this->load->view('footer');
-    }
-
     function dataPengaduan(){
         $this->load->view('header');
         $this->load->view('product');
