@@ -62,6 +62,7 @@
                 </div>
             </div>
             <div class="row">
+                <h2>Kode Pengaduan : <span class="label label-info"><?php echo $kodePengaduan; ?></span></h2>
                     <div class="panel panel-primary">
                         <div class="panel-heading">Detail Pengaduan</div>
                         <div class="panel-body">

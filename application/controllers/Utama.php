@@ -13,6 +13,7 @@ class Utama extends CI_Controller
     {
         parent::__construct();
         $this->load->helper(array('url'));
+        $this->load->model('The_Model');
         $this->load->library(array('form_validation','pagination','session'));
     }
 
@@ -36,6 +37,39 @@ class Utama extends CI_Controller
         $this->load->view('header');
         $this->load->view('cek_pengaduan');
         $this->load->view('footer');
+    }
+
+
+    function showResultCekPengaduan(){
+        $kodePengaduan = $this->input->post('txt_kode');
+
+        $pengaduan = $this->The_Model->getPengaduanByKode($kodePengaduan)->result();
+
+        if ($pengaduan != null){
+            foreach ($pengaduan as $item) {
+                $idPengaduan = $item->id_pengaduan;
+            }
+
+            $data['pengaduan'] = $this->The_Model->getDetailPengaduan($idPengaduan)->result();
+
+            foreach ($data['pengaduan'] as $c){
+                $idUser = $c->id_user;
+            }
+
+            $data['user'] = $this->The_Model->getDataUser($idUser)->result();
+            $data['saksi'] = $this->The_Model->getDataSaksi($idPengaduan)->result();
+            $data['tanggapan'] = $this->The_Model->getTanggapanByIdPengaduan($idPengaduan)->result();
+
+            $this->load->view('header');
+            $this->load->view('result_cek',$data);
+            $this->load->view('footer');
+        }else{
+            $this->session->set_flashdata("error_cek","Konfirmasi Passwod tidak valid");
+            redirect('Utama/cekPengaduan');
+        }
+
+
+
     }
 
     function register(){

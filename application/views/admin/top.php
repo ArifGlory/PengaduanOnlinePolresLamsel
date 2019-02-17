@@ -23,7 +23,7 @@
 
     <link rel="stylesheet" href="<?php echo base_url();?>/assets4/plugins/datatables/dataTables.bootstrap.css">
     <!-- sweetalert-->
-    <script type="text/javascript" src="<?php echo base_url();?>/assets2/aksesoris/SweetAlert/sweetalert.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>/assets4/aksesoris/SweetAlert/sweetalert.min.js"></script>
     <!-- here we go maps -->
 
 
@@ -96,9 +96,6 @@
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Pengaturan</a>
-                                </div>
                                 <div class="pull-right">
                                     <a href="<?php echo base_url();?>Login/logout" class="btn btn-default btn-flat">Log out</a>
                                 </div>

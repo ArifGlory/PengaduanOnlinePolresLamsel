@@ -37,7 +37,7 @@
                             <?php foreach ($pengaduanku as $b) { ?>
                             <div class="col-md-6 animate-box" data-animate-effect="fadeInLeft">
                                 <h4><?php echo $b->nama_pengaduan?></h4>
-                                <a href="<?php echo base_url();?>User/detailPengaduan/<?php echo $b->kode_pengaduan;?>">
+                                <a href="<?php echo base_url();?>User/detailPengaduan/<?php echo $b->id_pengaduan;?>">
                                 <div class="project" style="background-image: url(<?php echo base_url();?>/foto/<?php echo $b->foto; ?>);">
                                     <div class="desc">
                                         <div class="con">

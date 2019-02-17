@@ -72,10 +72,10 @@ class User extends CI_Controller
 
     }
 
-    function detailPengaduan($kodePengaduan){
-        $data['pengaduan'] = $this->The_Model->getDetailPengaduan($kodePengaduan)->result();
+    function detailPengaduan($idPengaduan){
+        $data['pengaduan'] = $this->The_Model->getDetailPengaduan($idPengaduan)->result();
         $data['user'] = $this->The_Model->getDataUser($this->id_user)->result();
-        $data['saksi'] = $this->The_Model->getDataSaksi($kodePengaduan)->result();
+        $data['saksi'] = $this->The_Model->getDataSaksi($idPengaduan)->result();
 
         $this->load->view('header');
         $this->load->view('pengaduan/detail_pengaduan',$data);

@@ -2,7 +2,7 @@
     <div class="pull-right hidden-xs">
         <b>Version</b> 0.0.1
     </div>
-    <strong>Copyright &copy; 2018 <a href="#">Diskominfo Kota Metro</a>.</strong> All rights
+    <strong>Copyright &copy; 2018 <a href="#">Kepolisian Resor Lampung Selatan</a>.</strong> All rights
     reserved.
 </footer>
 
@@ -243,6 +243,7 @@
         });
     });
 
+
     // Bar chart
     new Chart(document.getElementById("bar-chart"), {
         type: 'bar',
@@ -265,28 +266,6 @@
         }
     });
 
-
-    var t = $('#dtable').DataTable({
-        "paging": true,
-        "lengthChange": false,
-        "searching": true,
-        "ordering": true,
-        "info": false,
-        "autoWidth": true,
-        "iDisplayLength": 10,
-        "columnDefs": [
-            {
-                "targets": [ 0 ], //first column / numbering column
-                "orderable": false, //set not orderable
-            }]
-    });
-
-    t.on( 'order.dt search.dt', function () {
-        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-            cell.innerHTML = i+1;
-        } );
-    } ).draw();
-
     $('#dtable2').DataTable({
         "paging": true,
         "lengthChange": true,
@@ -297,40 +276,30 @@
         "iDisplayLength": 10
     });
 
-    $("#dtable2").on("click", ".edit-aspirasi", function(event) {
-        /*alert($(this).attr('data-nama_pelapor'));*/
-        var srcId = $(this).attr('data-id_aspirasi');
-        var waktu = $(this).attr('data-tanggal');
-        var tanggal = waktu.substr(0,10);
-        var pukul = waktu.substr(11,12);
-        var srcImage= $(this).attr('data-foto_aspirasi');
-
-        $(".fotoAspirasi").attr("src",srcImage);
-        $(".id_aspirasi").val($(this).attr('data-id_aspirasi'));
-        $(".fotoAspirasi").val();
-        $(".namaPelapor").text($(this).attr('data-nama_pelapor'));
-        $(".noHape").text($(this).attr('data-no_hape'));
-        $(".tanggal").text("Tanggal : "+tanggal);
-        $(".pukul").text("Pukul : "+pukul);
-        $(".kategori").text($(this).attr('data-kategori'));
-        $(".isiAspirasi").text($(this).attr('data-isi_aspirasi'));
+    $("#dtable2").on("click", ".edit-admin", function(event) {
+        alert('aaaa');
+        $(".id_admin").val($(this).attr('data-id_admin'));
     });
 
-    $("#dtable2").on("click", ".edit-kategori", function(event) {
-        /* alert($(this).attr('data-id_pelanggan'));*/
-        $(".id_kategori").val($(this).attr('data-id_kategori'));
-        $(".namakategori").val($(this).attr('data-nama_kategori'));
-        $(".topik").val($(this).attr('data-topik'));
-        $(".id_opd").val($(this).attr('data-id_opd'));
-        $(".nm_opd").val($(this).attr('data-nm_opd'));
-    });
-
-    $("#dtable2").on("click", ".edit-opd", function(event) {
-        /* alert($(this).attr('data-id_pelanggan'));*/
-        $(".id_opd").val($(this).attr('data-id_opd'));
-        $(".namaopd").val($(this).attr('data-nama_opd'));
-
-    });
+    function areYourSure(event) {
+        event.preventDefault(); // prevent form submit
+        var form = event.target.form; // storing the form
+       // var form = document.forms["frmNonAktif"]; // storing the form
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }),function (isConfirm) {
+            if (isConfirm){
+                form.submit();
+            }else {
+                swal("Cancelled", "Your imaginary file is safe :)", "error");
+            }
+        }
+        ;
+    }
 
 
     function convertToRupiah(objek) {
