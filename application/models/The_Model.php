@@ -73,28 +73,29 @@ class The_Model extends CI_Model
 
         if ($cek != 0){
 
+            if ($result[0]->publish == "T"){
 
-            //   $pass_didb = $this->encryption->decrypt($result[0]->password);
-            $pass_didb = $result[0]->password;
+                $pass_didb = $result[0]->password;
+                if ($pass_didb == $password){
 
-            if ($pass_didb == $password){
-                /* $data_session = array(
-                     'id'=>$result[0]->id_user,
-                     'nama'=>$result[0]->nm_lengkap ,
-                     'bagian'=>"admin"
-                 );*/
-                $session['id_user'] = $result[0]->id_user;
-                $session['username'] = $result[0]->email;
-                $session['nama'] = $result[0]->nama_user;
+                    $session['id_user'] = $result[0]->id_user;
+                    $session['username'] = $result[0]->email;
+                    $session['nama'] = $result[0]->nama_user;
 
-                $this->session->set_userdata($session);
+                    $this->session->set_userdata($session);
 
-                redirect('User');
+                    redirect('User');
+                }else{
+
+                    $this->session->set_flashdata("error","Login Gagal, cek kembali Username dan password anda");
+                    redirect('Login');
+                }
             }else{
-
-                $this->session->set_flashdata("error","Login Gagal, cek kembali Username dan password anda");
+                $this->session->set_flashdata("error_nonaktif","Login Gagal, Akun anda telah di nonaktifkan");
                 redirect('Login');
             }
+
+
 
         }else{
             $this->session->set_flashdata("error","Login Gagal, cek kembali Username dan password anda");
@@ -107,7 +108,22 @@ class The_Model extends CI_Model
         return $data;
     }
 
-    function getDetailPengaduan($idPengaduan){
+    function generateIdUser(){
+        $data =  $this->db->get($this->mst_user)->num_rows();
+        $data = $data + 1;
+        return $data;
+    }
+
+
+    function getDetailPengaduan($kodePengaduan){
+        $q = $this->db->query("SELECT * FROM tb_pengaduan 
+								    INNER JOIN tb_kejahatan 
+								        ON (tb_pengaduan.id_kejahatan = tb_kejahatan.id_kejahatan)
+								           WHERE kode_pengaduan = '$kodePengaduan'");
+        return $q;
+    }
+
+    function getDetailPengaduanByID($idPengaduan){
         $q = $this->db->query("SELECT * FROM tb_pengaduan 
 								    INNER JOIN tb_kejahatan 
 								        ON (tb_pengaduan.id_kejahatan = tb_kejahatan.id_kejahatan)
@@ -115,9 +131,9 @@ class The_Model extends CI_Model
         return $q;
     }
 
-    function getDataSaksi($idPengaduan){
+    function getDataSaksi($kodePengaduan){
         $q = $this->db->query("SELECT * FROM tb_saksi INNER JOIN tb_pengaduan ON (tb_pengaduan.id_pengaduan = tb_saksi.id_pengaduan)
-        WHERE tb_pengaduan.id_pengaduan = '$idPengaduan'");
+        WHERE tb_pengaduan.kode_pengaduan = '$kodePengaduan'");
         return $q;
     }
 
@@ -176,6 +192,8 @@ class The_Model extends CI_Model
         $data =  $this->db->get($this->mst_tanggapan);
         return $data;
     }
+
+
 
     function getDataAkunAdmin(){
         $data =  $this->db->get($this->mst_admin);

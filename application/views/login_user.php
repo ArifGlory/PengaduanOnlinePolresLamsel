@@ -22,6 +22,18 @@
             });
         </script>
     <?php } ?>
+    <?php if ($this->session->flashdata('error_nonaktif')){ ?>
+        <script>
+            swal({
+                title: "Error",
+                text: "Login Gagal, Akun anda telah di nonaktifkan",
+                timer: 2000,
+                showConfirmButton : false,
+                type : "error",
+                icon: "error"
+            });
+        </script>
+    <?php } ?>
     <div class="colorlib-about">
         <div class="colorlib-narrow-content">
             <div class="row row-bottom-padded-md">

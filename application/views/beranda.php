@@ -57,8 +57,9 @@
 			<nav id="colorlib-main-menu" role="navigation">
 				<ul>
 					<li class="colorlib-active"><a href="<?php echo base_url();?>">Home</a></li>
+                    <li><a href="<?php echo base_url();?>User/pengaduan">Pengaduan</a></li>
 					<li><a href="<?php echo base_url();?>Utama/cekPengaduan">Cek Pengaduan</a></li>
-					<li><a href="<?php echo base_url();?>Login">Login</a></li>
+
 				</ul>
 			</nav>
 

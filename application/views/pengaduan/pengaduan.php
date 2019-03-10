@@ -17,12 +17,61 @@
                 </div>
             </div>
             <div class="row">
+                <div class="panel panel-primary">
+                <div class="panel-heading">Form Data Diri</div>
+                <div class="panel-body">
+                    <div class="col-md-12 animate-box" data-animate-effect="fadeInLeft">
+                        <?php echo form_open_multipart('User/pengaduan_simpan')?>
+                        <div class="col-md-6">
+                            <h3>Isi Data Diri anda</h3>
+                        </div>
+                        <div class="col-md-6" align="center">
+                            <h3>Kode Pengaduan : <span class="label label-info"><?php echo $kodePengaduan; ?></span></h3>
+                            <input class="form-control" value="<?php echo $kodePengaduan; ?>" maxlength="40" id="txt_kode" name="txt_kode" type="hidden" placeholder="" required>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="register-username"><i class="icon-user"></i> <b>Nama</b></label>
+                            <input class="form-control" maxlength="40" id="txt_nama" name="txt_nama" type="text" placeholder="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-username"><i class="icon-mail"></i> <b>Email</b></label>
+                            <input class="form-control" maxlength="40" id="txt_email" name="txt_email" type="text" placeholder="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-username"><i class="icon-flag"></i> <b>Pekerjaan</b></label>
+                            <input class="form-control" maxlength="40" id="txt_pekerjaan" name="txt_pekerjaan" type="text" placeholder="" required>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <label for="register-username"><i class="icon-flag"></i> <b>Agama</b></label>
+                                <input class="form-control" maxlength="40" id="txt_agama" name="txt_agama" type="text" placeholder="" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="register-username"><i class="icon-flag"></i> <b>Suku</b></label>
+                                <input class="form-control" maxlength="40" id="txt_suku" name="txt_suku" type="text" placeholder="" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="register-username"><i class="icon-flag"></i> <b>Kewarganegaraan</b></label>
+                                <input class="form-control" maxlength="40" id="txt_warga_negara" name="txt_warga_negara" type="text" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="txt_perihal">Alamat</label>
+                            <textarea  class="form-control" name="txt_alamat" id="txt_alamat"></textarea>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="row">
+                <br>
                     <div class="panel panel-primary">
                         <div class="panel-heading">Form Pengaduan</div>
                         <div class="panel-body">
                             <div class="col-md-12 animate-box" data-animate-effect="fadeInLeft">
 
-                                <?php echo form_open_multipart('User/pengaduan_simpan')?>
+
                                 <form role="form">
                                     <h3>Detail Laporan</h3>
                                     <div class="col-md-12">
@@ -41,9 +90,34 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
+                                        <div class="form-group">
+                                            <br>
+                                            <label for="register-username"><i class="icon-map3"></i> <b>Kecamatan</b></label>
+                                            <select class="form-control kecamatan" name="kecamatan" required>
+                                                <option value="Bakauheni">Bakauheni</option>
+                                                <option value="Candipuro">Candipuro</option>
+                                                <option value="Candipuro">Candipuro</option>
+                                                <option value="JatiAgung">JatiAgung</option>
+                                                <option value="Kalianda">Kalianda</option>
+                                                <option value="Katibung">Katibung</option>
+                                                <option value="Ketapang">Ketapang</option>
+                                                <option value="Merbau Mataram">Merbau Mataram</option>
+                                                <option value="Natar">Natar</option>
+                                                <option value="Palas">Palas</option>
+                                                <option value="Raja basa">Raja basa</option>
+                                                <option value="Sidomulyo">Sidomulyo</option>
+                                                <option value="Sragi">Sragi</option>
+                                                <option value="Tanjung Bintang">Tanjung Bintang</option>
+                                                <option value="Tanjung Sari">Tanjung Sari</option>
+                                                <option value="Way Panji">Way Panji</option>
+                                                <option value="Way Sulan">Way Sulan</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
                                         <div class="col-md-5">
                                             <div class="form-group">
-                                                <label for="register-username"><i class="icon-map3"></i> <b>Tempat Kejadian</b></label>
+                                                <label for="register-username"><i class="icon-map3"></i> <b>Tempat Kejadian (Spesifik)</b></label>
                                                 <input class="form-control" maxlength="70" id="txt_tempatkejadian" name="txt_tempatkejadian" type="text" placeholder="" required>
                                             </div>
                                         </div>
@@ -85,8 +159,13 @@
                                     </div>
                                     <div class="col-md-12">
                                         <br>
-                                        <label for="register-username"><i class="icon-user-outline"></i> <b>Nama Orang yang dilaporkan (Kosongkan jika tidak mengenal)</b></label>
+                                        <label for="register-username"><i class="icon-user-outline"></i> <b>Nama Orang yang dilaporkan (Jika tidak mengenal tulis saja NN / No name)</b></label>
                                         <input class="form-control" maxlength="30" id="txt_terlapor" name="txt_terlapor" type="text" placeholder="">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <br>
+                                        <label for="register-username"><i class="icon-archive"></i> <b>Barang bukti</b></label>
+                                        <input class="form-control" maxlength="60" id="txt_bukti" name="txt_bukti" type="text" placeholder="">
                                     </div>
                                     <div class="col-md-12">
                                         <br>
@@ -98,7 +177,6 @@
                                         <button type="submit" style="width: 100%; background-color: #00CC00; font-size: 15pt" class="btn btn-primary btn-lg">Laporkan<i class="icon-arrow-right3"></i></button>
                                     </div>
 
-                                </form>
                                 <?php echo form_close();?>
 
                             </div>

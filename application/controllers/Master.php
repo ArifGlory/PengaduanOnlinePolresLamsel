@@ -19,6 +19,7 @@ class Master extends CI_Controller
         if ($hakAkses != ""){
 
            $this->load->model('The_Model');
+            $this->load->library('dompdf_gen');
             $this->navbarTitle = "Master";
 
         }else{
@@ -40,26 +41,12 @@ class Master extends CI_Controller
         $this->load->view('admin/bottom');
     }
 
-    function detailPengaduan($idPengaduan){
-        $data['pengaduan'] = $this->The_Model->getDetailPengaduan($idPengaduan)->result();
-        $data['tanggapan'] = $this->The_Model->getTanggapanByIdPengaduan($idPengaduan)->result();
-
-        foreach ($data['pengaduan'] as $d){
-            $idUser = $d->id_user;
-        }
-
-        $data['user'] = $this->The_Model->getDataUser($idUser)->result();
-        $data['saksi'] = $this->The_Model->getDataSaksi($idPengaduan)->result();
-
-        $this->load->view('admin/top');
-        $this->load->view('admin/asidebar');
-        $this->load->view('pengaduan/admin_detail_pengaduan',$data);
-        $this->load->view('admin/bottom');
-    }
-
     function getPengaduanBaru(){
         $data['pengaduan'] = $this->The_Model->getPengaduanBaru()->result();
         $data['jmlBaru'] =  $this->The_Model->getPengaduanBaru()->num_rows();
+        $data['jmlProses'] =  $this->The_Model->getPengaduanProses()->num_rows();
+        $data['jmlSelesai'] =  $this->The_Model->getPengaduanSelesai()->num_rows();
+        $data['jmlSemua'] =  $this->The_Model->getAllDataPengaduan()->num_rows();
 
         $this->load->view('admin/top');
         $this->load->view('admin/asidebar');
@@ -67,9 +54,71 @@ class Master extends CI_Controller
         $this->load->view('admin/bottom');
     }
 
+    function getPengaduanProses(){
+        $data['pengaduan'] = $this->The_Model->getPengaduanProses()->result();
+        $data['jmlBaru'] =  $this->The_Model->getPengaduanBaru()->num_rows();
+        $data['jmlProses'] =  $this->The_Model->getPengaduanProses()->num_rows();
+        $data['jmlSelesai'] =  $this->The_Model->getPengaduanSelesai()->num_rows();
+        $data['jmlSemua'] =  $this->The_Model->getAllDataPengaduan()->num_rows();
+
+        $this->load->view('admin/top');
+        $this->load->view('admin/asidebar');
+        $this->load->view('pengaduan/pengaduan_admin',$data);
+        $this->load->view('admin/bottom');
+    }
+
+    function getPengaduanSelesai(){
+        $data['pengaduan'] = $this->The_Model->getPengaduanSelesai()->result();
+        $data['jmlBaru'] =  $this->The_Model->getPengaduanBaru()->num_rows();
+        $data['jmlProses'] =  $this->The_Model->getPengaduanProses()->num_rows();
+        $data['jmlSelesai'] =  $this->The_Model->getPengaduanSelesai()->num_rows();
+        $data['jmlSemua'] =  $this->The_Model->getAllDataPengaduan()->num_rows();
+
+        $this->load->view('admin/top');
+        $this->load->view('admin/asidebar');
+        $this->load->view('pengaduan/pengaduan_admin',$data);
+        $this->load->view('admin/bottom');
+    }
+
+    function detailPengaduan($idPengaduan){
+        $data['pengaduan'] = $this->The_Model->getDetailPengaduanByID($idPengaduan)->result();
+        foreach ($data['pengaduan'] as $d){
+            $idUser = $d->id_user;
+            $kodePengaduan = $d->kode_pengaduan;
+            $idPengaduan = $d->id_pengaduan;
+        }
+        $data['tanggapan'] = $this->The_Model->getTanggapanByIdPengaduan($idPengaduan)->result();
+
+
+
+        $data['user'] = $this->The_Model->getDataUser($idUser)->result();
+        $data['saksi'] = $this->The_Model->getDataSaksi($kodePengaduan)->result();
+
+        $this->load->view('admin/top');
+        $this->load->view('admin/asidebar');
+        $this->load->view('pengaduan/admin_detail_pengaduan',$data);
+        $this->load->view('admin/bottom');
+    }
+
+    function pengaduan_validasi(){
+        $idPengaduan = $this->input->post('id_pengaduan');
+
+        $dataUpdateValidasi = array(
+            'validasi'=>"T"
+        );
+
+        $this->db->where("id_pengaduan",$idPengaduan);
+        $this->db->update($this->tb_pengaduan,$dataUpdateValidasi);
+
+        redirect('Master/detailPengaduan/'.$idPengaduan);
+    }
+
+
     function tanggapan_simpan(){
         $in['isi_tanggapan'] = $this->input->post('isi_tanggapan');
         $in['id_pengaduan'] = $this->input->post('id_pengaduan');
+        $in['pasal'] = $this->input->post('txtPasal');
+        $in['jenis_kejahatan'] = $this->input->post('jenisKejahatan');
         $publish = $this->input->post('status_pengaduan');
         $kode_pengaduan = $this->input->post('kode_pengaduan');
 
@@ -109,6 +158,22 @@ class Master extends CI_Controller
         $this->session->set_flashdata("success_update","Update Data Pengaduan Berhasil");
         redirect('Master/detailPengaduan/'.$in['id_pengaduan']);
 
+    }
+
+    function tanggapan_update_statusAduan(){
+        $in['id_pengaduan'] = $this->input->post('id_pengaduan');
+        $publish = $this->input->post('status_pengaduan');
+        $kode_pengaduan = $this->input->post('kode_pengaduan');
+
+        $dataUpdateStatus = array(
+            'status'=>$publish
+        );
+
+        $this->db->where("id_pengaduan",$in['id_pengaduan']);
+        $this->db->update($this->tb_pengaduan,$dataUpdateStatus);
+
+        $this->session->set_flashdata("success_update","Update Data Pengaduan Berhasil");
+        redirect('Master/detailPengaduan/'.$in['id_pengaduan']);
     }
 
     function pelapor(){
@@ -153,6 +218,32 @@ class Master extends CI_Controller
         $this->db->update($this->tb_user,$dataUpddateStatus);
 
         redirect('Master/detailPelapor/'.$idUser);
+    }
+
+    function cetak_pengaduan($idPengaduan){
+        $data['pengaduan'] = $this->The_Model->getDetailPengaduanByID($idPengaduan)->result();
+        $data['tanggapan'] = $this->The_Model->getTanggapanByIdPengaduan($idPengaduan)->result();
+
+        foreach ($data['pengaduan'] as $d){
+            $idUser = $d->id_user;
+        }
+
+        $data['user'] = $this->The_Model->getDataUser($idUser)->result();
+        $data['saksi'] = $this->The_Model->getDataSaksi($idPengaduan)->result();
+        $data['tanggalNow'] =  date('Y-m-d');
+
+        $this->load->view('report/laporan', $data);
+
+        $paper_size  = 'A4'; //paper size
+        $orientation = 'portrait'; //tipe format kertas
+        $html = $this->output->get_output();
+
+        $this->dompdf->set_paper($paper_size, $orientation);
+        //Convert to PDF
+        $this->dompdf->load_html($html);
+        $this->dompdf->render();
+        $this->dompdf->stream("laporan_pengaduan.pdf", array('Attachment'=>0));
+
     }
 
 

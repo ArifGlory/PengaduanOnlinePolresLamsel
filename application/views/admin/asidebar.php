@@ -35,13 +35,13 @@ $hakAkses = $this->session->userdata('hak_akses');
                 </a>
             </li>
             <?php if ($hakAkses == "SPKT") { ?>
-            <li class="active treeview">
-                <a href="<?php echo base_url(); ?>Master/pelapor">
+            <!--<li class="active treeview">
+                <a href="<//?php /*echo base_url(); */?>Master/pelapor">
                     <i class="fa fa-user-secret"></i> <span>Data Pelapor</span>
                     <span class="pull-right-container">
             </span>
                 </a>
-            </li>
+            </li>-->
             <?php } ?>
             <?php if ($hakAkses == "S") { ?>
             <li class="active treeview">
@@ -52,17 +52,6 @@ $hakAkses = $this->session->userdata('hak_akses');
                 </a>
             </li>
             <?php } ?>
-            <li class="treeview">
-                <a href="#">
-                    <i class="fa fa-folder"></i> <span>Laporan</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="<?php echo base_url();?>Master/barang"><i class="fa fa-circle-o"></i> Laporan Bulanan</a></li>
-                </ul>
-            </li>
         </ul>
     </section>
     <!-- /.sidebar -->

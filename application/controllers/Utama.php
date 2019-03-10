@@ -50,21 +50,21 @@ class Utama extends CI_Controller
                 $idPengaduan = $item->id_pengaduan;
             }
 
-            $data['pengaduan'] = $this->The_Model->getDetailPengaduan($idPengaduan)->result();
+            $data['pengaduan'] = $this->The_Model->getDetailPengaduan($kodePengaduan)->result();
 
             foreach ($data['pengaduan'] as $c){
                 $idUser = $c->id_user;
             }
 
             $data['user'] = $this->The_Model->getDataUser($idUser)->result();
-            $data['saksi'] = $this->The_Model->getDataSaksi($idPengaduan)->result();
+            $data['saksi'] = $this->The_Model->getDataSaksi($kodePengaduan)->result();
             $data['tanggapan'] = $this->The_Model->getTanggapanByIdPengaduan($idPengaduan)->result();
 
             $this->load->view('header');
             $this->load->view('result_cek',$data);
             $this->load->view('footer');
         }else{
-            $this->session->set_flashdata("error_cek","Konfirmasi Passwod tidak valid");
+            $this->session->set_flashdata("error_cek","Pengaduan tidak ditermukan");
             redirect('Utama/cekPengaduan');
         }
 

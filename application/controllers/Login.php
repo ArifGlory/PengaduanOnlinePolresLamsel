@@ -42,7 +42,7 @@ class Login extends CI_Controller
 
     function logout(){
         session_destroy();
-        redirect(base_url());
+        redirect('Login/loginAdmin');
     }
 
 }

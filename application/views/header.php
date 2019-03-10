@@ -63,15 +63,15 @@ $namaUser = $this->session->userdata('nama');
         <nav id="colorlib-main-menu" role="navigation">
             <ul>
                 <li class="colorlib-active"><a href="<?php echo base_url();?>">Home</a></li>
+                <li><a href="<?php echo base_url();?>User/pengaduan">Pengaduan</a></li>
                 <li><a href="<?php echo base_url();?>Utama/cekPengaduan">Cek Pengaduan</a></li>
                 <?php if (isset($namaUser)){
                     ?>
-                    <li><a href="<?php echo base_url();?>User/pengaduan">Pengaduan</a></li>
                     <li><a href="<?php echo base_url();?>User">Dashboard</a></li>
                     <li><a href="<?php echo base_url();?>Login/logout">Logout</a></li>
                 <?php
                 }else { ?>
-                <li><a href="<?php echo base_url();?>Login">Login</a></li>
+               <!-- <li><a href="<?php /*echo base_url();*/?>Login">Login</a></li>-->
                 <?php } ?>
             </ul>
         </nav>

@@ -32,12 +32,16 @@ foreach ($user as $d){
     $namaPelapor = $d->nama_user;
 }
 
-if (isset($tanggapan)){
+if ($tanggapan !=null){
     foreach ($tanggapan as $item) {
         $isiTanggapan = $item->isi_tanggapan;
+        $pasal = $item->pasal;
+        $tipe = $item->jenis_kejahatan;
     }
 }else{
     $isiTanggapan = "belum ditanggapi";
+    $pasal = "-";
+    $tipe = "-";
 }
 
 ?>
@@ -84,7 +88,18 @@ if (isset($tanggapan)){
                         <div class="col-md-12 animate-box" data-animate-effect="fadeInLeft">
                             <br>
                             <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Jenis Kejahatan</label>
+                                    <br>
+                                    <h3><span class="label label-info"><?php echo $tipe; ?></span></h3>
+                                </div>
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Berkenaan dengan pasal</label>
+                                    <br>
+                                    <h3><span class="label label-info"><?php echo $pasal; ?></span></h3>
+                                </div>
                                 <div class="col-md-12">
+                                    <label class="bmd-label-floating">Tindakan Polisi</label>
                                     <h3><?php cetak($isiTanggapan); ?></h3>
                                 </div>
                             </div>
@@ -94,7 +109,7 @@ if (isset($tanggapan)){
 
                 <br>
                 <a class="btn btn-lg btn-success" type="submit"
-                   href="<?php echo base_url();?>User/detailPengaduan/<?php echo $idPengaduan;?>"> Lihat Detail</a>
+                   href="<?php echo base_url();?>User/detailPengaduan/<?php echo $kodePengaduan;?>"> Lihat Detail</a>
             </div>
         </div>
     </div>

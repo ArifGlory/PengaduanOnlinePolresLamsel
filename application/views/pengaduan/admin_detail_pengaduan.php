@@ -16,6 +16,7 @@ foreach ($pengaduan as $b){
     $status = $b->status;
     $idPengaduan = $b->id_pengaduan;
     $kodePengaduan = $b->kode_pengaduan;
+    $validate = $b->validasi;
 
 }
 
@@ -30,6 +31,14 @@ if ($status == "M"){
     $sttsMsg = "Selesai";
 }
 
+if ($validate == "T"){
+    $sttsValidate = "Pengaduan Disetujui";
+}else if ($validate == "F") {
+    $sttsValidate = "Pengaduan Belum disetujui";
+}else{
+    $sttsValidate = "Pengaduan Ditolak";
+}
+
 if ($terlapor == null || $terlapor == ""){
     $terlapor = "Tidak ada";
 }
@@ -40,10 +49,16 @@ foreach ($user as $d){
     $namaPelapor = $d->nama_user;
 }
 
-if (isset($tanggapan)){
+if ($tanggapan != null){
     foreach ($tanggapan as $d){
         $isiTanggapan = $d->isi_tanggapan;
+        $jenis = $d->jenis_kejahatan;
+        $pasal = $d->pasal;
     }
+}else{
+    $isiTanggapan = "-";
+    $pasal = "-";
+    $jenis = "-";
 }
 
 ?>
@@ -101,10 +116,13 @@ if (isset($tanggapan)){
                                 <div class="col-md-6">
                                     <h3><?php echo $namaPengaduan; ?></h3>
                                 </div>
-                                <div class="col-md-6" align="right"><h3><span class="label label-info"><?php echo $sttsMsg; ?></span></h3></div>
+                                <div class="col-md-6" align="right">
+                                    <h3><span class="label label-info"><?php echo $sttsMsg; ?></span></h3>
+                                    <h3><span class="label label-info"><?php echo $sttsValidate; ?></span></h3>
+                                </div>
 
                             </div>
-                            <br><br>
+                            <br><br><br><br>
                             <!-- panel data pelapor -->
                             <div class="panel-group">
                                 <br><br>
@@ -244,29 +262,61 @@ if (isset($tanggapan)){
                         </div>
 
 
-                        <?php if ($hakAkses == "SR"){ ?>
+                        <?php if ($hakAkses == "SR" || $hakAkses == "SPKT"){  ?>
 
-                            <?php if (isset($tanggapan)){ ?>
+                            <?php if ($tanggapan != null){ ?>
                                 <button class="btn btn-md bg-maroon edit_tanggapan" name="edit_tanggapan" style="background-color: #2dc899; color: white; width: 20%" href=""
                                         data-toggle="modal" data-target="#modalEdit">
                                     <i class="fa fa-pencil"></i> Ubah Tanggapan</button>
                             <?php  }else { ?>
 
+                                <?php if ($hakAkses == "SPKT" && $validate == "T") { ?>
+
                             <button class="btn btn-md bg-olive add_tanggapan" name="add_tanggapan" style="background-color: #2dc899; color: white; width: 20%" href=""
                                     data-toggle="modal" data-target="#modalAdd" data-id_pengaduan="<?php echo $idPengaduan; ?>">
                                 <i class="fa fa-plus"></i> Tambah Tanggapan</button>
                             <br>
-                            <?php } ?>
+                               <?php } ?>
+
+                            <?php }
+                            ?>
+
+                            <div class="col-md-12">
+                                <div class="col-md-6"></div>
+                                <div class="col-md-6" align="right">
+                                    <?php if ($hakAkses == "SR" && $validate == "F") { ?>
+                                        <button class="btn btn-md bg-olive" name="add_validate" style="background-color: #2dc899; color: white;"
+                                                data-toggle="modal" data-target="#modalValidate">
+                                            <i class="fa fa-plus"></i> Setujui Pengaduan</button>
+                                    <?php } ?>
+                                </div>
+                                <br><br>
+                                <hr>
+                            </div>
 
                         <?php } ?>
+
+
 
                         <button class="btn btn-md bg-olive view_tanggapan pull-right" name="view_tanggapan" style="background-color: #2dc899; color: white; width: 20%" href=""
                                 data-toggle="modal" data-target="#modalDetail" data-id_pengaduan="<?php echo $idPengaduan; ?>">
                             <i class="fa fa-arrow-right"></i> Lihat Tanggapan</button>
+
+                        <?php if ($hakAkses == "SPKT" || $hakAkses == "SR"){ ?>
+                        <div class="col-md-12">
+                            <br>
+                            <div class="col-md-6">
+                                <?php if ($hakAkses == "SPKT" && $validate == "T") { ?>
+                                <a class="btn btn-primary btn-lg" href="<?php echo base_url();?>Master/cetak_pengaduan/<?php echo $idPengaduan;?>">Cetak</a>
+                                <?php } ?>
+                            </div>
+
+
+                        </div>
+                        <?php } ?>
                     </div>
 
                 </div>
-
             </div>
         </div>
         <!-- /.row -->
@@ -299,8 +349,19 @@ if (isset($tanggapan)){
                                     </select>
                                 </div>
                                 <div class="form-group">
+                                    <label class="bmd-label-floating">Jenis Tindak Kejahatan</label>
+                                    <select class="form-control status_pengaduan" name="jenisKejahatan" required>
+                                        <option value="Pidana">Pidana</option>
+                                        <option value="Perdata">Perdata</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Berkenaan dengan Pasal</label>
+                                    <input type="text" required class="form-control" name="txtPasal">
+                                </div>
+                                <div class="form-group">
                                     <br>
-                                    <label class="control-label" for="txt_perihal">Isi Tanggapan</label>
+                                    <label class="control-label" for="txt_perihal">Tindakan Polisi</label>
                                     <textarea required  class="form-control isi_tanggapan" name="isi_tanggapan" id="isi_tanggapan"></textarea>
                                 </div>
                             </div>
@@ -336,11 +397,20 @@ if (isset($tanggapan)){
                                     <label class="bmd-label-floating">Status Pengaduan</label>
                                     <br>
                                     <h3><span class="label label-info"><?php echo $sttsMsg; ?></span></h3>
-
+                                </div>
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Jenis Kejahatan</label>
+                                    <br>
+                                    <h3><span class="label label-info"><?php echo $jenis; ?></span></h3>
+                                </div>
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Berkenaan dengan pasal</label>
+                                    <br>
+                                    <h3><span class="label label-info"><?php echo $pasal; ?></span></h3>
                                 </div>
                                 <div class="form-group">
                                     <br>
-                                    <label class="control-label" for="txt_perihal">Isi Tanggapan</label>
+                                    <label class="control-label" for="txt_perihal">Tindakan Polisi</label>
                                     <textarea required disabled  class="form-control isi_tanggapan" name="isi_tanggapan" id="isi_tanggapan"><?php echo $isiTanggapan;?></textarea>
                                 </div>
                             </div>
@@ -355,34 +425,118 @@ if (isset($tanggapan)){
         </div>
     </div>
 
-    <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <?php if ($hakAkses == "SR") { ?>
+        <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel" style="font-weight: bold;">Edit Tanggapan </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="<?php echo base_url(); ?>Master/tanggapan_update_statusAduan" method="post">
+                        <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="hidden" class="form-control id_pengaduan" value="<?php echo $idPengaduan;?>" name="id_pengaduan">
+                                    <input type="hidden" class="form-control kode_pengaduan" value="<?php echo $kodePengaduan;?>" name="kode_pengaduan">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Status Pengaduan</label>
+                                        <select class="form-control status_pengaduan" name="status_pengaduan" required>
+                                            <option value="P">Di Proses</option>
+                                            <option value="T">Di Tolak</option>
+                                            <option value="S">Selesai</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn" data-dismiss="modal">
+                                <i class="fa fa-reply"></i> Batal</a>
+                            <button  class="btn btn-primary"><i class="fa fa-save"></i> Simpan Perubahan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?php } else { ?>
+        <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel" style="font-weight: bold;">Edit Tanggapan </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="<?php echo base_url(); ?>Master/tanggapan_update" method="post">
+                        <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="hidden" class="form-control id_pengaduan" value="<?php echo $idPengaduan;?>" name="id_pengaduan">
+                                    <input type="hidden" class="form-control kode_pengaduan" value="<?php echo $kodePengaduan;?>" name="kode_pengaduan">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Status Pengaduan</label>
+                                        <select class="form-control status_pengaduan" name="status_pengaduan" required>
+                                            <option value="P">Di Proses</option>
+                                            <option value="T">Di Tolak</option>
+                                            <option value="S">Selesai</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Jenis Tindak Kejahatan</label>
+                                        <select class="form-control status_pengaduan" name="jenisKejahatan" required>
+                                            <option value="Pidana">Pidana</option>
+                                            <option value="Perdata">Perdata</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Berkenaan dengan Pasal</label>
+                                        <input type="text" required class="form-control" value="<?php echo $pasal;?>" name="txtPasal">
+                                    </div>
+                                    <div class="form-group">
+                                        <br>
+                                        <label class="control-label" for="txt_perihal">Tindakan Polisi</label>
+                                        <textarea required  class="form-control isi_tanggapan" name="isi_tanggapan" id="isi_tanggapan"><?php echo $isiTanggapan;?></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn" data-dismiss="modal">
+                                <i class="fa fa-reply"></i> Batal</a>
+                            <button  class="btn btn-primary"><i class="fa fa-save"></i> Simpan Perubahan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
+
+    <div class="modal fade" id="modalValidate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel" style="font-weight: bold;">Edit Tanggapan </h5>
+                    <h5 class="modal-title" id="exampleModalLabel" style="font-weight: bold;">Validasi Pengaduan </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?php echo base_url(); ?>Master/tanggapan_update" method="post">
+                <form action="<?php echo base_url(); ?>Master/pengaduan_validasi" method="post">
                     <div class="modal-body">
 
                         <div class="row">
                             <div class="col-md-12">
                                 <input type="hidden" class="form-control id_pengaduan" value="<?php echo $idPengaduan;?>" name="id_pengaduan">
                                 <input type="hidden" class="form-control kode_pengaduan" value="<?php echo $kodePengaduan;?>" name="kode_pengaduan">
-                                <div class="form-group">
-                                    <label class="bmd-label-floating">Status Pengaduan</label>
-                                    <select class="form-control status_pengaduan" name="status_pengaduan" required>
-                                        <option value="P">Di Proses</option>
-                                        <option value="T">Di Tolak</option>
-                                        <option value="S">Selesai</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <br>
-                                    <label class="control-label" for="txt_perihal">Isi Tanggapan</label>
-                                    <textarea required  class="form-control isi_tanggapan" name="isi_tanggapan" id="isi_tanggapan"><?php echo $isiTanggapan;?></textarea>
+                                <div class="text-center">
+                                   <h3>Anda Yakin ingin menyetujui pengaduan ini ?</h3>
                                 </div>
                             </div>
                         </div>
@@ -391,12 +545,13 @@ if (isset($tanggapan)){
                     <div class="modal-footer">
                         <a class="btn" data-dismiss="modal">
                             <i class="fa fa-reply"></i> Batal</a>
-                        <button  class="btn btn-primary"><i class="fa fa-save"></i> Simpan Perubahan</button>
+                        <button  class="btn btn-primary"><i class="fa fa-check"></i> Setujui</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
 
 
 </div>

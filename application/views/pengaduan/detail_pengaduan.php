@@ -11,6 +11,8 @@
         $status = $b->status;
         $idPengaduan = $b->id_pengaduan;
         $kodePengaduan = $b->kode_pengaduan;
+        $validate = $b->validasi;
+        $kecamatan = $b->kecamatan;
     }
 
     if ($status == "M"){
@@ -23,21 +25,58 @@
         $sttsMsg = "Selesai";
     }
 
+    if ($validate == "T"){
+        $sttsValidate = "Pengaduan Disetujui";
+    }else if ($validate == "F") {
+        $sttsValidate = "Pengaduan Belum disetujui";
+    }else{
+        $sttsValidate = "Pengaduan Ditolak";
+    }
+
+
     if ($terlapor == null || $terlapor == ""){
         $terlapor = "Tidak ada";
+    }
+
+    if ($tanggapan != null){
+        foreach ($tanggapan as $d){
+            $isiTanggapan = $d->isi_tanggapan;
+            $jenis = $d->jenis_kejahatan;
+            $pasal = $d->pasal;
+        }
+    }else{
+        $isiTanggapan = "-";
+        $pasal = "-";
+        $jenis = "-";
     }
 
     foreach ($user as $d){
         $pekerjaanUser = $d->pekerjaan;
         $alamat = $d->alamat;
+        $namaPelapor = $d->nama_user;
+        $suku = $d->suku;
+        $agama = $d->agama;
+        $negara = $d->warga_negara;
     }
-    $namaPelapor = $this->session->userdata('nama');
+
     ?>
     <?php if ($this->session->flashdata('success')){ ?>
         <script>
             swal({
                 title: "Sukses",
                 text: "Berhasil tambah data saksi",
+                timer: 2000,
+                showConfirmButton : false,
+                type : "success",
+                icon: "success"
+            });
+        </script>
+    <?php } ?>
+    <?php if ($this->session->flashdata('success_2')){ ?>
+        <script>
+            swal({
+                title: "Sukses",
+                text: "Pengaduan anda berhasil ditambahkan",
                 timer: 2000,
                 showConfirmButton : false,
                 type : "success",
@@ -63,6 +102,7 @@
             </div>
             <div class="row">
                 <h2>Kode Pengaduan : <span class="label label-info"><?php echo $kodePengaduan; ?></span></h2>
+                <h2><span class="label label-info"><?php echo $sttsValidate; ?></span></h2>
                     <div class="panel panel-primary">
                         <div class="panel-heading">Detail Pengaduan</div>
                         <div class="panel-body">
@@ -92,6 +132,18 @@
                                                 <tr>
                                                     <td style="width: 50%"><h5>Pekerjaan </h5></td>
                                                     <td style="width: 50%"><h5><?php echo $pekerjaanUser;?></h5></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 50%"><h5>Suku </h5></td>
+                                                    <td style="width: 50%"><h5><?php echo $suku;?></h5></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 50%"><h5>Agama </h5></td>
+                                                    <td style="width: 50%"><h5><?php echo $agama;?></h5></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 50%"><h5>Kewarganegaraan </h5></td>
+                                                    <td style="width: 50%"><h5><?php echo $negara;?></h5></td>
                                                 </tr>
                                                 <tr>
                                                     <td style="width: 50%"><h5>Alamat </h5></td>
@@ -125,6 +177,10 @@
                                                     <tr>
                                                         <td style="width: 50%"><h5>Pukul </h5></td>
                                                         <td style="width: 50%"><h5><?php echo $pukul;?></h5></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="width: 50%"><h5>Kecamatan </h5></td>
+                                                        <td style="width: 50%"><h5><?php echo $kecamatan;?></h5></td>
                                                     </tr>
                                                     <tr>
                                                         <td style="width: 50%"><h5>Tempat Kejadian </h5></td>
@@ -211,6 +267,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                <button class="btn btn-md bg-olive view_tanggapan pull-right" name="view_tanggapan" style="background-color: #2dc899; color: white; width: 20%" href=""
+                                        data-toggle="modal" data-target="#modalDetail">
+                                    <i class="fa fa-arrow-right"></i> Lihat Tanggapan Admin</button>
                             </div>
                         </div>
 
@@ -259,6 +318,53 @@
                                     <button style="color: black"  class="btn btn-primary"><i class="fa fa-save"></i> Simpan Data</button>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel" style="font-weight: bold;">Detail Tanggapan </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="hidden" class="form-control id_pengaduan" value="<?php echo $idPengaduan;?>" name="id_pengaduan">
+                                        <input type="hidden" class="form-control kode_pengaduan" value="<?php echo $kodePengaduan;?>" name="kode_pengaduan">
+                                        <div class="form-group">
+                                            <label class="bmd-label-floating">Status Pengaduan</label>
+                                            <br>
+                                            <h3><span class="label label-info"><?php echo $sttsMsg; ?></span></h3>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="bmd-label-floating">Jenis Kejahatan</label>
+                                            <br>
+                                            <h3><span class="label label-info"><?php echo $jenis; ?></span></h3>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="bmd-label-floating">Berkenaan dengan pasal</label>
+                                            <br>
+                                            <h3><span class="label label-info"><?php echo $pasal; ?></span></h3>
+                                        </div>
+                                        <div class="form-group">
+                                            <br>
+                                            <label class="control-label" for="txt_perihal">Tindakan Polisi</label>
+                                            <textarea required disabled  class="form-control isi_tanggapan" name="isi_tanggapan" id="isi_tanggapan"><?php echo $isiTanggapan;?></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn" data-dismiss="modal">
+                                    <i class="fa fa-reply"></i> Tutup</a>
+                            </div>
                         </div>
                     </div>
                 </div>

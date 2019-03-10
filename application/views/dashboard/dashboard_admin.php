@@ -90,7 +90,7 @@ $cekvariabel = "aman";
 
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Statistik Pengaduan Bulanan</h3>
+                    <h3 class="box-title">Pengaduan Online - POLRES Lampung Selatan</h3>
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -102,13 +102,7 @@ $cekvariabel = "aman";
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <p class="text-center">
-                                <strong>Data Pengaduan di Polres Lampung Selatan</strong>
-                            </p>
-
-                                <!-- Sales Chart Canvas -->
-                                <canvas id="bar-chart" style="height: 180px; width: 703px;" height="180" width="703"></canvas>
-                            <!-- /.chart-responsive -->
+                            <img src="<?php echo base_url();?>/foto/polisirame.jpg" height="400" width="100%" alt="logo">
                         </div>
                         <!-- /.col -->
 

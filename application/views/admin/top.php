@@ -46,10 +46,12 @@
         <?php
         $nama = $this->session->userdata('nama');
         $hakAkses = $this->session->userdata('hak_akses');
-        if ($hakAkses == "A"){
-            $hakAkses = "Admin";
-        }else if ($hakAkses == "S"){
-            $hakAkses = "Super Admin";
+        if ($hakAkses == "SR"){
+            $namaHakAkses = "Sat Reskrim";
+        }else if ($hakAkses == "SPKT"){
+            $namaHakAkses = "Admin SPKT";
+        }else if ($hakAkses == "KSR"){
+            $namaHakAkses = "Kasat Reskrim";
         }
         ?>
 
@@ -84,7 +86,7 @@
                                 <img src="<?php echo base_url();?>/assets4/dist/img/avatar-13.png" class="img-circle" alt="User Image">
 
                                 <p>
-                                    <?php echo  $nama;?> - <?php echo $hakAkses; ?>
+                                    <?php echo  $nama;?> - <?php echo $namaHakAkses; ?>
                                 </p>
                             </li>
                             <!-- Menu Body -->
