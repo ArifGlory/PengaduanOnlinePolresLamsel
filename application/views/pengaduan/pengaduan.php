@@ -35,7 +35,7 @@
                             <input class="form-control" maxlength="40" id="txt_nama" name="txt_nama" type="text" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label for="register-username"><i class="icon-mail"></i> <b>Email</b></label>
+                            <label for="register-username"><i class="icon-mail"></i> <b>No Handphone</b></label>
                             <input class="form-control" maxlength="40" id="txt_email" name="txt_email" type="text" placeholder="" required>
                         </div>
                         <div class="form-group">
@@ -75,10 +75,6 @@
                                 <form role="form">
                                     <h3>Detail Laporan</h3>
                                     <div class="col-md-12">
-                                        <label for="register-username"><i class="icon-user-outline"></i> <b>Nama Kejahatan (Contoh : Pencurian Tas)</b></label>
-                                        <input class="form-control" maxlength="30" id="nama_pengaduan" name="nama_pengaduan" type="text" placeholder="">
-                                    </div>
-                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <br>
                                             <label for="register-username"><i class="icon-map3"></i> <b>Jenis Kejahatan</b></label>
@@ -88,6 +84,10 @@
                                                 <?php   } ?>
                                             </select>
                                         </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="register-username"><i class="icon-user-outline"></i> <b>Nama Kejahatan (Contoh : Pencurian Tas)</b></label>
+                                        <input class="form-control" maxlength="30" id="nama_pengaduan" name="nama_pengaduan" type="text" placeholder="">
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
